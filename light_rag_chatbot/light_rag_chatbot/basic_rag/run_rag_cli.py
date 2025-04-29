@@ -1,9 +1,9 @@
 # run_rag_cli.py
 
-from embeddings import load_embeddings
-from retrieval import retrieve_context
-from prompt_builder import build_prompt
-from mistral_runner import generate_answer
+from rag_with_agents.embeddings import load_embeddings
+from rag_with_agents.retrieval import retrieve_context
+from rag_with_agents.prompt_builder import build_prompt
+from rag_with_agents.mistral_runner import generate_answer
 
 def main():
     print("Welcome to HomeSecure QnA Chatbot (Light RAG CLI)\n")
