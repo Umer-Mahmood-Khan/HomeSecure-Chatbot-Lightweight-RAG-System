@@ -1,27 +1,85 @@
 # 🏡 HomeSecure Chatbot – RAG + Rule-Based Agent System 🧠⚙️
 
-This project is a fully local, offline chatbot system that combines **Retrieval-Augmented Generation (RAG)** with a **rule-based Agent architecture** for decision-making. It uses a static `.txt` knowledge base, vector search with FAISS, and a locally hosted **Mistral 7B** model for generation — no cloud, no APIs, no internet required.
-
----# HomeSecure Chatbot – RAG + Agent-Based Local System 🧠⚙️
-
-This is the upgraded version of the HomeSecure chatbot — now enhanced with a **rule-based Agent layer** that brings decision-making and tool execution to a previously simple RAG pipeline. It runs fully **offline**, powered by a local Mistral 7B model and FAISS-based vector search over `.txt` documents.
+A fully local, offline chatbot system combining **Retrieval-Augmented Generation (RAG)**, a **rule-based Agent architecture**, and a **Streamlit web interface**.  
+Uses a static `.txt` knowledge base, vector search with FAISS, and a locally hosted **Mistral 7B** model for generation — **no cloud, no APIs, no internet required**.
 
 ---
 
-## ✨ New Features
+## 🆕 New in v2.0
 
-- 🔍 Context-aware retrieval via FAISS and `sentence-transformers`
-- 🧠 Agent logic for intent detection and tool selection
-- 🛠️ Built-in tools:
-  - `book_inspection()`  
-  - `show_pricing()`  
-  - `escalate_to_human()`
-- 🛡 Guardrails for topic relevance, missing info, and safe fallback
-- 💬 Falls back to RAG + Mistral for general QnA
-- 🖥️ Fully local CLI-based chatbot, future-ready for web UI
-- 🔐 100% offline / air-gapped deployment
+- Added **web UI** using Streamlit
+- Real-time **chat history** display
+- Retrieved **context visibility**
+- Agent **tool responses** and fallback to Mistral generation
 
 ---
+
+## 📌 Project Phases Overview
+
+```mermaid
+graph LR
+A[Phase 1: Light RAG Chatbot] --> B[Phase 2: RAG + Rule-Based Agent + Streamlit UI]
+```
+---
+
+### 📁 Project Structure ###
+
+```
+HomeSecure-Chatbot-Lightweight-RAG-System/
+├── agents/
+│   ├── agent.py
+│   └── tools.py
+├── embeddings.py
+├── retrieval.py
+├── run_rag_cli.py
+├── streamlit_app.py
+├── knowledge_base/
+├── environment.yml
+├── requirements.txt
+├── screenshots/
+│   ├── screenshot_1_chat.png
+│   ├── screenshot_2_agent_response.png
+├── README.md
+├── LICENSE
+
+```
+---
+
+## ✨ Features by Phase
+### 📦 Phase 1: Light RAG Chatbot
+- 🔍 Context retrieval using FAISS
+
+- 🧠 Prompt generation with Mistral 7B
+
+- 📚 .txt-based knowledge base
+
+- 🖥️ CLI interaction
+
+### 🤖 Phase 2: Rule-Based Agent + Streamlit UI
+- 📊 Intent detection (book, price, complaint, etc.)
+
+  #### 🛠 Tool execution:
+
+- book_inspection()
+
+- show_pricing()
+
+- escalate_to_human()
+
+  #### 🛡 Guardrails:
+
+- Topic relevance
+
+- Missing field detection
+
+- Off-topic blocking
+
+- Fallback to Mistral generation
+
+- Streamlit web app interface
+
+---
+
 
 ## 🧠 Tech Stack
 
@@ -29,55 +87,57 @@ This is the upgraded version of the HomeSecure chatbot — now enhanced with a *
 |----------------|--------------|
 | Language Model | Mistral 7B via HuggingFace Transformers |
 | Embeddings     | all-MiniLM-L6-v2 from `sentence-transformers` |
-| Vector DB      | FAISS (in-memory flat index) |
+| Vector Search  | FAISS (in-memory flat index) |
 | Agent Layer    | Custom Python class (rule-based logic) |
-| Inference      | PyTorch + Accelerate |
-| Language       | Python 3.10 |
-| Interface      | Command-Line Interface (CLI) |
+| Web Inference  | Streamlit |
+| Runtime        | Conda + Python 3.10 |
+| Inference Engine | PyTorch + Accelerate |
+
 
 ---
 
-## 🔁 How It Works
+### 🔁 How the Agent Pipeline Works ###
 
-1. Load and chunk `.txt` documents from `knowledge_base/`
-2. Embed each chunk using `MiniLM-L6-v2`
-3. Store vectors in a FAISS index
-4. Accept user input from CLI
-5. Agent analyzes intent:
-   - If actionable → calls appropriate tool
-   - Else → fallback to RAG prompt generation
-6. Construct prompt:  
-   **Context + User Question → Mistral → Answer**
-7. Return final response to user
+```
+User Question
+      ↓
+Retrieve Context (FAISS)
+      ↓
+Agent Layer:
+   • Analyze Intent
+   • Apply Guardrails
+   • Call Tool or fallback to RAG
+      ↓
+Final Answer (Tool response or Mistral generation)
+
+
+```
+
 
 ---
 
-## 🧪 Sample Usage
 
+## 🖥️ Running the Streamlit App
 ```bash
-$ python run_rag_cli.py
+# 1. Clone the project
+git clone https://github.com/Umer-Mahmood-Khan/HomeSecure-Chatbot-Lightweight-RAG-System.git
+cd HomeSecure-Chatbot-Lightweight-RAG-System
 
-🏡 Welcome to HomeSecure QnA Chatbot (Light RAG + Agent)
+# 2. Create environment
+conda env create -f environment.yml
+conda activate homesecure_env
 
-You: I want to book an inspection
+# 3. Run the Streamlit app
+streamlit run streamlit_app.py --server.address=0.0.0.0 --server.port=8501
 
-🤖 Agent: To book an inspection, please provide your address and preferred date.
+```
 
-You: 123 Main Street, May 5th
-
-🤖 Agent: Booking confirmed for address: 123 Main Street, date: May 5th.
-
-You: How much does an inspection cost?
-
-🤖 Agent: Our standard home inspection costs $199.
-
-You: Can you teach me to bake?
-
-🛡️ Agent: I'm only able to assist with home inspection related queries.
+---
 
 
-## 📌 Project Phases Overview
+## 🖼️ Screenshots
 
-```mermaid
-graph LR
-A[Phase 1: Light RAG Chatbot] --> B[Phase 2: RAG + Rule-Based Agent]
+### 🔹 Chat Interface
+![Alt text](https://github.com/Umer-Mahmood-Khan/HomeSecure-Chatbot-Lightweight-RAG-System/blob/main/Screenshots/Mistral%20RAG%20Response.png)
+### 🔹 Agent Response Example
+![Alt text](https://github.com/Umer-Mahmood-Khan/HomeSecure-Chatbot-Lightweight-RAG-System/blob/main/Screenshots/Tool%20Response.png)
